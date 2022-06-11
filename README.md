@@ -1,7 +1,7 @@
 # Usage
 
 ```bash
-pipx install publish_to_zhihu
+pipx install publish-to-zhihu
 
 # convert latex math formula to zhihu format
 zhihu_convert_latex to_be_convert.md
