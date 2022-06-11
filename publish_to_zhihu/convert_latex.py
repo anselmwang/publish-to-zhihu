@@ -2,7 +2,7 @@ import re
 import sys
 
 
-def replace_latex(content):
+def convert_latex(content):
     try:
         pattern1 = r"\$\$\n*([\s\S]*?)\n*\$\$"
         new_pattern1 = r'\n<img src="https://www.zhihu.com/equation?tex=\1" alt="\1" class="ee_img tr_noresize" eeimg="1">\n'
@@ -27,5 +27,5 @@ if __name__ == "__main__":
         output_file_name, "w", encoding="utf-8"
     ) as f_output:
         all_lines = f.read()
-        new_content = replace_latex(all_lines)
+        new_content = convert_latex(all_lines)
         f_output.write(new_content)

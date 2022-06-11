@@ -1,0 +1,21 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "prepare_md_for_zhihu.py",
+            "type": "python",
+            "request": "launch",
+            "program": "publish_to_zhihu/prepare_md_for_zhihu.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "args": [
+                "c:/Cloud/OneDrive/note/",
+                "c:/temp/test_zhihu/",
+                "c:/Cloud/OneDrive/note/publish/为什么恒星日不等于地球日？.md"
+            ]
+        }
+    ]
+}

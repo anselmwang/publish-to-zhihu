@@ -11,8 +11,13 @@ from azure.storage.blob import BlobServiceClient, PublicAccess
 name_regex = re.compile("[^a-z0-9]")  # Make sure container name follows the azure rule.
 
 
-def upload(
-    storage_account_url, container_name, connection_string, file_root, file_collection
+def upload_images(
+    storage_account_url,
+    container_name,
+    connection_string,
+    file_root,
+    file_collection,
+    overwrite=False,
 ):
     if not storage_account_url.endswith("/"):
         storage_account_url += "/"
@@ -27,7 +32,6 @@ def upload(
     # Upload
     uploaded_urls = []
     for file_rel_path in file_collection:
-        file_type = file_rel_path.split(".")[-1]
         # blob_name = (
         #     name_regex.sub("-", file_rel_path.split("/")[-1].lower()) + "." + file_type
         # )
@@ -36,7 +40,7 @@ def upload(
             container=container_name, blob=blob_name
         )
         with open(os.path.join(file_root, file_rel_path), "rb") as data:
-            blob_client.upload_blob(data)
+            blob_client.upload_blob(data, overwrite=overwrite)
         uploaded_urls.append(storage_account_url + container_name + "/" + blob_name)
     return uploaded_urls
 
@@ -66,7 +70,7 @@ if __name__ == "__main__":
     connection_string = args["ConnStr"]
     file_root = args["FileRoot"]
     file_collection = args["File"]
-    uploaded_urls = upload(
+    uploaded_urls = upload_images(
         url, container_name, connection_string, file_root, file_collection
     )
     for uploaded_url in uploaded_urls:
