@@ -14,8 +14,7 @@ def convert_latex(content):
     except Exception as e:
         print(e)
 
-
-if __name__ == "__main__":
+def main():
     if len(sys.argv) < 2:
         print("need file name")
         sys.exit(1)
@@ -29,3 +28,6 @@ if __name__ == "__main__":
         all_lines = f.read()
         new_content = convert_latex(all_lines)
         f_output.write(new_content)
+
+if __name__ == "__main__":
+    main()

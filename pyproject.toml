@@ -30,4 +30,6 @@ build-backend = "poetry.core.masonry.api"
 profile = "black"
 
 [tool.poetry.scripts]
-hello = 'publish_to_zhihu.console:hello'
+zhihu_convert_latex = 'publish_to_zhihu.convert_latex:main'
+zhihu_upload_images = 'publish_to_zhihu.upload_images:main'
+zhihu_prepare_md = 'publish_to_zhihu.prepare_md:main'

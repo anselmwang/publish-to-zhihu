@@ -10,17 +10,21 @@ from azure.storage.blob import BlobServiceClient, PublicAccess
 
 name_regex = re.compile("[^a-z0-9]")  # Make sure container name follows the azure rule.
 
+CONN_STR_RE = re.compile("AccountName=(.*?);.*EndpointSuffix=(.*?)($|;)")
+
+def get_azure_blob_url(conn_str):
+    m = CONN_STR_RE.search(conn_str)
+    return f"https://{m.group(1)}.blob.{m.group(2)}"
 
 def upload_images(
-    storage_account_url,
     container_name,
     connection_string,
     file_root,
     file_collection,
     overwrite=False,
 ):
-    if not storage_account_url.endswith("/"):
-        storage_account_url += "/"
+    storage_account_url = get_azure_blob_url(connection_string)
+    storage_account_url += "/"
     # Create container if not exist.
     blob_service_client = BlobServiceClient.from_connection_string(connection_string)
     try:
@@ -45,15 +49,10 @@ def upload_images(
     return uploaded_urls
 
 
-if __name__ == "__main__":
+def main():
     # Parse commandline arguments
     parser = argparse.ArgumentParser(
         description="Upload image to the Azure Image Host."
-    )
-    parser.add_argument(
-        "-u",
-        "--url",
-        help="The public url to access the resources and the final url will be print.(Account Level)",
     )
     parser.add_argument(
         "Container", help="The Container which the file will be uploaded to."
@@ -65,13 +64,16 @@ if __name__ == "__main__":
     )
     args = vars(parser.parse_args())
 
-    url = args["url"]
     container_name = name_regex.sub("-", args["Container"].lower())
     connection_string = args["ConnStr"]
     file_root = args["FileRoot"]
     file_collection = args["File"]
     uploaded_urls = upload_images(
-        url, container_name, connection_string, file_root, file_collection
+        container_name, connection_string, file_root, file_collection
     )
     for uploaded_url in uploaded_urls:
         print(uploaded_url)
+
+
+if __name__ == "__main__":
+    main()

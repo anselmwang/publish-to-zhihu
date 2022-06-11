@@ -5,10 +5,10 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "prepare_md_for_zhihu.py",
+            "name": "prepare_md.py",
             "type": "python",
             "request": "launch",
-            "program": "publish_to_zhihu/prepare_md_for_zhihu.py",
+            "module": "publish_to_zhihu.prepare_md",
             "console": "integratedTerminal",
             "justMyCode": true,
             "args": [
