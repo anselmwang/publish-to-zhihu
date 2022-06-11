@@ -1,0 +1,32 @@
+[tool.poetry]
+name = "publish_to_zhihu"
+version = "0.1.0"
+description = "Publish markdown to Zhihu"
+authors = ["Anselm Wang <anselmwang@gmail.com>"]
+homepage = "https://github.com/anselmwang/publish_to_zhihu"
+repository = "https://github.com/anselmwang/publish_to_zhihu"
+readme= "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.7"
+click = "^8.0.4"
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+keyring = "^23.5.0"
+artifacts-keyring = "^0.3.1"
+twine = "^3.8.0"
+pre-commit = "^2.17.0"
+black = "^22.1.0"
+isort = "^5.10.1"
+ipykernel = "^6.9.1"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.isort]
+profile = "black"
+
+[tool.poetry.scripts]
+hello = 'publish_to_zhihu.console:hello'
