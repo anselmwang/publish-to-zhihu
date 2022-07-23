@@ -23,15 +23,14 @@ def process_image_link(container, conn_str, image_folder, re_match):
             overwrite=True,
         )
         image_link = uploaded_urls[0]
-    return f'<img src="{image_link}" class="origin_image zh-lightbox-thumb lazy">\n'
+    return f'![]({image_link})'
 
 
 def main():
     parser = argparse.ArgumentParser(
         description="""
-    Convert standard Markdown file to Zhihu Format
-    1. Convert latex formula
-    2. Upload all the images
+    Convert standard Markdown file to mdnice Format
+    1. Upload all the images
 
     Assume all the local image links in markdown file is relative paths based on `image_folder`
     """
@@ -69,7 +68,6 @@ def main():
                 ),
                 content,
             )
-            new_content = convert_latex(new_content)
             out_f.write(new_content)
 
 
