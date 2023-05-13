@@ -2,7 +2,6 @@ import argparse
 import os
 import re
 
-from .convert_latex import convert_latex
 from .upload_images import upload_images
 
 # IMAGE_LINK_RE = re.compile(
@@ -11,6 +10,41 @@ from .upload_images import upload_images
 
 
 OBSIDIAN_IMAGE_LINK_RE = re.compile(r"!\[\[([^\]]*)\]\]")
+
+
+def append_newline_to_list_items(markdown_string):
+    # Regular expression pattern to match unordered and ordered list items
+    pattern = r"(^[-*+]\s|\d+\.\s)"
+
+    # Split the markdown string into lines
+    lines = markdown_string.split("\n")
+
+    # Iterate over each line and check for list items
+    for i in range(len(lines)):
+        # Check if the line starts with a list item
+        if re.match(pattern, lines[i]):
+            # Append a newline character before the list item
+            lines[i] = "\n" + lines[i]
+
+    # Join the modified lines back into a single string
+    modified_string = "\n".join(lines)
+    return modified_string
+
+
+def ensure_image_link_newline(markdown_string):
+    # Regular expression pattern to match image links
+    pattern = r"!\[.*?\]\(.*?\)"
+
+    # Find all image links in the markdown string
+    image_links = re.findall(pattern, markdown_string)
+
+    # Iterate over each image link and ensure it appears at the beginning of a newline
+    for image_link in image_links:
+        # Replace the image link with a newline + image link
+        markdown_string = markdown_string.replace(image_link, "\n" + image_link)
+
+    return markdown_string
+
 
 def process_image_link(container, conn_str, image_folder, re_match):
     image_link = re_match.group(1)
@@ -23,7 +57,7 @@ def process_image_link(container, conn_str, image_folder, re_match):
             overwrite=True,
         )
         image_link = uploaded_urls[0]
-    return f'![]({image_link})'
+    return f"![]({image_link})"
 
 
 def main():
@@ -63,11 +97,11 @@ def main():
         ) as out_f:
             content = in_f.read()
             new_content = OBSIDIAN_IMAGE_LINK_RE.sub(
-                lambda m: process_image_link(
-                    container, conn_str, image_link_root, m
-                ),
+                lambda m: process_image_link(container, conn_str, image_link_root, m),
                 content,
             )
+            new_content = append_newline_to_list_items(new_content)
+            new_content = ensure_image_link_newline(new_content)
             out_f.write(new_content)
 
 
