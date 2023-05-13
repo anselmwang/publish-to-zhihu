@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "publish_to_zhihu"
-version = "0.1.1"
+version = "0.1.2"
 description = "Publish markdown to Zhihu"
 authors = ["Anselm Wang <anselmwang@gmail.com>"]
 homepage = "https://github.com/anselmwang/publish_to_zhihu"

@@ -4,11 +4,6 @@ import re
 
 from .upload_images import upload_images
 
-# IMAGE_LINK_RE = re.compile(
-#     r"!\[[^\]]*\]\((?P<filename>.*?)(?=\"|\))(?P<optionalpart>\".*\")?\)"
-# )
-
-
 OBSIDIAN_IMAGE_LINK_RE = re.compile(r"!\[\[([^\]]*)\]\]")
 
 
@@ -32,16 +27,15 @@ def append_newline_to_list_items(markdown_string):
 
 
 def ensure_image_link_newline(markdown_string):
-    # Regular expression pattern to match image links
-    pattern = r"!\[.*?\]\(.*?\)"
-
     # Find all image links in the markdown string
-    image_links = re.findall(pattern, markdown_string)
+    image_links = re.findall(OBSIDIAN_IMAGE_LINK_RE, markdown_string)
 
     # Iterate over each image link and ensure it appears at the beginning of a newline
     for image_link in image_links:
         # Replace the image link with a newline + image link
-        markdown_string = markdown_string.replace(image_link, "\n" + image_link)
+        markdown_string = markdown_string.replace(
+            f"![[{image_link}]]", "\n" + f"![[{image_link}]]"
+        )
 
     return markdown_string
 
@@ -58,6 +52,9 @@ def process_image_link(container, conn_str, image_folder, re_match):
         )
         image_link = uploaded_urls[0]
     return f"![]({image_link})"
+
+    # not needed for mdnice
+    # return f'<img src="{image_link}" class="origin_image zh-lightbox-thumb lazy">\n'
 
 
 def main():
@@ -96,12 +93,13 @@ def main():
             output_file_path, "w", encoding="utf-8"
         ) as out_f:
             content = in_f.read()
+            new_content = ensure_image_link_newline(content)
             new_content = OBSIDIAN_IMAGE_LINK_RE.sub(
                 lambda m: process_image_link(container, conn_str, image_link_root, m),
-                content,
+                new_content,
             )
-            new_content = append_newline_to_list_items(new_content)
-            new_content = ensure_image_link_newline(new_content)
+            # not needed for mdnice
+            # new_content = append_newline_to_list_items(new_content)
             out_f.write(new_content)
 
 

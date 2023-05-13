@@ -1,9 +1,13 @@
 # 功能
-这个工具主要帮助将Obsidian风格的Markdown文件转化为知乎的格式，主要有以下功能
+这个工具帮助将Obsidian风格的Markdown文件转化为mdnice的格式，主要有以下功能
 - 自动上传本地图片到Azure blob storage
-- 自动为每个list item前面增加额外的回车，不然知乎不识别
 - 保证每个image link都在每行的最开始，没有额外的空格
 
+
+想要转化为知乎格式，其实还需要下面几个工作，不过我们依赖mdnice来做下面的转换。
+- 自动为每个list item前面增加额外的回车，不然知乎不识别
+- 转换Obsidian的图片链接`![[attachments/Pasted image 20230511181810.png]]`到知乎格式
+- 自动转换latex公式
 # 安装
 首先自行创造Azure storage account和blob container
 
@@ -42,8 +46,8 @@ zhihu_prepare_md --container publishpic c:\Cloud\OneDrive\note\ c:\Cloud\OneDriv
 
 发布
 - 访问`c:\Cloud\OneDrive\published_to_zhihu\ `找到刚刚生成的文件
-- 打开知乎，发表新文章
-- 导入刚刚生成的md文件
+- 打开mdnice，把md文件拷贝进去。然后从mdnice拷贝出渲染好的适合知乎的内容
+- 打开知乎，发表新文章，粘贴从mdnice得到的内容
 - 保证知乎成功导入图片：知乎会从图床中导入图片，有的时候图片上传不成功，需要手工点击图片重试一次
 - 手工填写标题
 - 对于长文章，点击“目录”按钮来生成目录
@@ -55,6 +59,7 @@ zhihu_prepare_md --container publishpic c:\Cloud\OneDrive\note\ c:\Cloud\OneDriv
 修改已发表的文章
 - 点击文章的修改按钮或链接
 - 清空文章的所有内容
+- 粘贴从mdnice得到的内容
 - 重新导入本地生成的md文件
 - 保证知乎成功导入图片
 - 预览
