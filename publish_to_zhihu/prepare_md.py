@@ -40,7 +40,7 @@ def ensure_image_link_newline(markdown_string):
     return markdown_string
 
 
-def process_image_link(container, conn_str, image_folder, re_match):
+def process_image_link(container, conn_str, image_folder, re_match, is_mdnice):
     image_link = re_match.group(1)
     if not image_link.startswith("http://") and not image_link.startswith("https://"):
         uploaded_urls = upload_images(
@@ -51,10 +51,10 @@ def process_image_link(container, conn_str, image_folder, re_match):
             overwrite=True,
         )
         image_link = uploaded_urls[0]
-    return f"![]({image_link})"
-
-    # not needed for mdnice
-    # return f'<img src="{image_link}" class="origin_image zh-lightbox-thumb lazy">\n'
+    if is_mdnice:
+        return f"![]({image_link})"
+    else:
+        return f'<img src="{image_link}" class="origin_image zh-lightbox-thumb lazy">\n'
 
 
 def main():
@@ -71,6 +71,11 @@ def main():
         "--container",
         help="The Container which the file will be uploaded to.",
         default="imagehost",
+    )
+    parser.add_argument(
+        "--mdnice",
+        action="store_true",
+        help="Convert to mdnice format, default is zhihu format",
     )
     parser.add_argument("image_link_root", help="The root folder of image links.")
     parser.add_argument("output_folder", help="The folder to store converted md files")
@@ -95,11 +100,15 @@ def main():
             content = in_f.read()
             new_content = ensure_image_link_newline(content)
             new_content = OBSIDIAN_IMAGE_LINK_RE.sub(
-                lambda m: process_image_link(container, conn_str, image_link_root, m),
+                lambda m: process_image_link(
+                    container, conn_str, image_link_root, m, args.mdnice
+                ),
                 new_content,
             )
-            # not needed for mdnice
-            # new_content = append_newline_to_list_items(new_content)
+            if not args.mdnice:
+                # if append newline before list items for mdnice,
+                # there will be extra newline between items after rendering
+                new_content = append_newline_to_list_items(new_content)
             out_f.write(new_content)
 
 

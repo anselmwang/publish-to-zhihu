@@ -1,12 +1,21 @@
+# Inconvenience
+
+今天这个项目依赖mdnice来转化公式，但是从mdnice复制到知乎编辑器时，所有H1、H2、H3标题通通会被变成H1。mdnice没有做错，应该是知乎编辑器的问题。
+
+所以，对于没有公式的文章，请不加"--mdnice" flag，直接上传生成的md到知乎。
+
+对于有公式的文章，用上"--mdnice" flag。
+
+
+
 # 功能
 这个工具帮助将Obsidian风格的Markdown文件转化为mdnice的格式，主要有以下功能
 - 自动上传本地图片到Azure blob storage
 - 保证每个image link都在每行的最开始，没有额外的空格
-
-
-想要转化为知乎格式，其实还需要下面几个工作，不过我们依赖mdnice来做下面的转换。
 - 自动为每个list item前面增加额外的回车，不然知乎不识别
 - 转换Obsidian的图片链接`![[attachments/Pasted image 20230511181810.png]]`到知乎格式
+
+想要转化为知乎格式，其实还需要下面几个工作，不过我们依赖mdnice来做下面的转换。
 - 自动转换latex公式
 # 安装
 首先自行创造Azure storage account和blob container
