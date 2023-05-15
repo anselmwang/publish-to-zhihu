@@ -1,5 +1,6 @@
 # Inconvenience
 
+## 选择mdnice或zhihu格式
 今天这个项目依赖mdnice来转化公式，但是从mdnice复制到知乎编辑器时，所有H1、H2、H3标题通通会被变成H1。mdnice没有做错，应该是知乎编辑器的问题。
 
 所以，对于没有公式的文章，请不加"--mdnice" flag，直接上传生成的md到知乎。

@@ -7,6 +7,12 @@ from .upload_images import upload_images
 OBSIDIAN_IMAGE_LINK_RE = re.compile(r"!\[\[([^\]]*)\]\]")
 
 
+def has_higher_level_directory(md_content):
+    pattern = r"^#{3,}"
+    matches = re.findall(pattern, md_content, re.MULTILINE)
+    return len(matches) > 0
+
+
 def append_newline_to_list_items(markdown_string):
     # Regular expression pattern to match unordered and ordered list items
     pattern = r"(^[-*+]\s|\d+\.\s)"
@@ -98,6 +104,9 @@ def main():
             output_file_path, "w", encoding="utf-8"
         ) as out_f:
             content = in_f.read()
+            if has_higher_level_directory(content):
+                print(f"Skip {file_path} because it has higher level directory")
+                continue
             new_content = ensure_image_link_newline(content)
             new_content = OBSIDIAN_IMAGE_LINK_RE.sub(
                 lambda m: process_image_link(
