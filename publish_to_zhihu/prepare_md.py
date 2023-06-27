@@ -1,6 +1,7 @@
 import argparse
 import os
 import re
+import urllib.parse
 
 from .upload_images import upload_images
 
@@ -57,6 +58,7 @@ def process_image_link(container, conn_str, image_folder, re_match, is_mdnice):
             overwrite=True,
         )
         image_link = uploaded_urls[0]
+        image_link = urllib.parse.quote(image_link, safe=":/")
     if is_mdnice:
         return f"![]({image_link})"
     else:

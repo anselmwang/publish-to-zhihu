@@ -106,7 +106,7 @@ pytest
 
 测试脚本是否正确
 ```bash
-python -m publish_to_zhihu.prepare_md --container publishpic c:\Cloud\OneDrive\note\ c:\Cloud\OneDrive\published_to_zhihu\ C:\Cloud\OneDrive\note\经济学\《曼昆经济学》成本笔记.md 
+python -m publish_to_zhihu.prepare_md --container publishpic --mdnice c:\Cloud\OneDrive\note\ c:\Cloud\OneDrive\published_to_mdnice\ "c:\Cloud\OneDrive\note\教育\具体方法和计划\数学教育\beast academy\journal.md"
 ```
 
 发布到pipx
